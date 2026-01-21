@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}
+dashboard page
+{% endblock %}
+
+{% block content %}
+<h2>Welcome {{username}} 😊😁 to this platform...</h2>
+<a href="{{ url_for('add_expense') }}" class="btn btn-outline-primary me-2">Add Expense</a>
+<a href="{{ url_for('manage_categories') }}" class="btn btn-outline-secondary me-2">Manage Categories</a>
+<a href="{{ url_for('logout') }}" class="btn btn-outline-danger">Logout</a>
+
+{% if suggestions %}
+    <div class="mb-4">
+        <h5>💡 Ai suggestions:</h5>
+        <ul>
+            {% for suggestion in suggestions %}
+            <li>{{suggestion}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+<canvas id="expensechart" height="100"></canvas>
+<hr>
+
+<table class="table table-striped mt-4 ">
+    <thead>
+        <tr>
+            <th>Title</th><th>Amount</th><th>Category</th><th>Date</th><th>Actions</th>            
+        </tr>
+    </thead>
+    <tbody>
+        {% for exp in expenses %}
+        <tr>
+            <td>{{exp.title}}</td>
+            <td>{{exp.amount}}</td>
+            <td>{{exp.category.name if exp.category else 'N/A'}}</td>
+            <td>{{exp.date}}</td>
+            <td>
+                <div class="d-flex mb-3">
+                    <a href="{{ url_for('add_expense') }}" class="btn btn-outline-primary me-2">Add Expense</a>
+                    <a href="{{ url_for('add_expense') }}" class="btn btn-outline-secondary me-2">Manage Categories</a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">Logout</a>
+                </div>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('expensechart').getContext('2d');
+
+    // Example data — replace with dynamic values from your backend if needed
+    const expenseChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ chart_labels | safe }}, // e.g., ['Food', 'Transport', 'Rent']
+            datasets: [{
+                label: 'Expenses',
+                data: {{ chart_data | safe }}, // e.g., [120, 90, 300]
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.add('active');
+            setTimeout(() => btn.classList.remove('active'), 200);
+        });
+    });
+</script>
+<script>
+    window.onload = function() {
+        {% if suggestions %}
+        alert("💡 You have new AI suggestions!");
+        {% endif %}
+    };
+</script>
+
+{% endblock %}

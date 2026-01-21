@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Category{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Category</h2>
+    <form  method="POST" action="{{ url_for('edit_category', category_id=category.id) }}">
+        <div class="mb-3">
+            <input type="text" name="category_name" id="category_name" class="form-control" value="{{ category.name }}" required aria-describedby="categoryHelp">
+            <small id="categoryHelp" class="form-text text-muted">Enter a new name for this category.</small>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">
+            <i class="bi bi-pencil-square"></i> Update
+        </button>
+        <a href="{{ url_for('manage_categories') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left-circle"></i> Cancel
+        </a>
+
+    </form>
+</div>
+{% endblock %}

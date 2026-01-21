@@ -4,4 +4,4 @@ Expense Tracker is a web application using Flask python web framework that track
 
 #Header two
 Languages --> Python,Javascript,Html,Css and SQL
-Frameworks --> Flask for backend and Bootstrap css for frotend
+Frameworks --> Flask for backend and Bootstrap css for frontend
