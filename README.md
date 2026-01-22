@@ -29,14 +29,14 @@ Tips to start:
 5. Use the tables to check your expenses
 
  Technologies used:
- i. Frontend
+ 1. Frontend
    - html
    - css
    - Javascript
    - CSS
    - Bootstrap css
-ii. Backend
+ 2. Backend
      -python
      -Flask
- iii Database
+ 3 Database
       -SQLITE 3
