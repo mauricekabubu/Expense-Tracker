@@ -3,11 +3,12 @@ from flask_login import login_user,logout_user,current_user,login_manager,LoginM
 from werkzeug.security import check_password_hash,generate_password_hash
 from datetime import datetime
 from model import db,User,Expense,Category
+import  os
 
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = "Mysecretkey"
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -36,6 +37,8 @@ def register():
         
         if User.query.filter_by(username=username).first():
             flash("Username already exists!", category="danger")
+
+            return  redirect(url_for("login"))
             
         else:
             new_user = User(username=username,password=password)
@@ -72,7 +75,7 @@ def dashboard():
     category_totals = {}
     
     for exp in expenses:
-        cat_name = exp.category.name if exp.category else "Uncategorised"
+        cat_name = exp.category.name if exp.category else "Uncategorized"
         category_totals[cat_name] = category_totals.get(cat_name,0) + exp.amount
         
     suggestions = []
